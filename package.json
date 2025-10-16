@@ -1,0 +1,19 @@
+{
+  "name": "simpleweb",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index_old.js",
+    "test": "jest --runInBand",
+    "lint": "echo \"(no linter yet)\" && exit 0"
+  },
+  "dependencies": {
+    "express": "*"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
+
