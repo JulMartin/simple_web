@@ -6,7 +6,10 @@ describe('Express routes', () => {
         const res = await request(app).get('/');
         expect(res.status).toBe(200);
         expect(res.text).toBe('Hi there, Kirsten');
+<<<<<<< HEAD
         expect(res.headers['content-type']).toMatch(/text\/html|text\/plain/);
+=======
+>>>>>>> b98361b3bc62577e7e4c41624f88f3ced985dc33
     });
 
     test('GET /health → 200 and "OK"', async () => {
