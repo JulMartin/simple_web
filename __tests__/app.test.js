@@ -5,7 +5,7 @@ describe('GET /', () => {
     it('responds with 200 and "Hi there"', async () => {
         const res = await request(app).get('/');
         expect(res.status).toBe(200);
-        expect(res.text).toBe('Hi there');
+        expect(res.text).toBe('Hi there, Kirsten');
     });
     it('returns 404 for unknown routes', async () => {
         const res = await request(app).get('/nope');
