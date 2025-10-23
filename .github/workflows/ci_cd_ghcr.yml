@@ -46,12 +46,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set lowercase image name
+        run: |
+          echo "IMAGE_LOWER=$(echo 'ghcr.io/${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       # Build (zwei Tags: latest + sha)
       - name: Build Docker image
         run: |
           docker build \
-            -t "$IMAGE:$TAG_LATEST" \
-            -t "$IMAGE:$TAG_SHA" \
+            -t "$IMAGE_LOWER:$TAG_LATEST" \
+            -t "$IMAGE_LOWER:$TAG_SHA" \
             .
 
       # Container starten und testen
@@ -60,7 +64,7 @@ jobs:
           docker run -d --rm \
             --name app-under-test \
             -p 127.0.0.1:${APP_PORT}:${APP_PORT} \
-            "$IMAGE:$TAG_SHA"
+            "$IMAGE_LOWER:$TAG_SHA"
 
       - name: Verify container is responding
         run: |
@@ -88,13 +92,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Normalize IMAGE to lowercase
-        run: |
-          echo "IMAGE_LOWER=$(echo '${{ env.IMAGE }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-
       - name: Push images (latest + sha)
         run: |
-          docker tag "$IMAGE:$TAG_LATEST" "$IMAGE_LOWER:$TAG_LATEST"
-          docker tag "$IMAGE:$TAG_SHA" "$IMAGE_LOWER:$TAG_SHA"
           docker push "$IMAGE_LOWER:$TAG_LATEST"
           docker push "$IMAGE_LOWER:$TAG_SHA"
